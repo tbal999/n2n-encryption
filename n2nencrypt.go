@@ -99,9 +99,6 @@ func (s *Storage) Encode(k *Key) {
 	storage.Code = string(storage.Intby[:])
 	storage.Str = "this has been encoded"
 	storage.By = nil
-	fmt.Println(storage.Code)
-	fmt.Println("")
-	fmt.Println(key.KKey)
 	*s = storage
 	*k = key
 }
@@ -126,11 +123,10 @@ func main() {
 	storage := Storage{}
 	key := Key{}
 	gameover := 0
-	fmt.Println("go encryption tool by tbal999")
+	fmt.Println("1 to 1 encryption")
 	for gameover != 1 {
 		fmt.Println("Type in command: s to save, l to load, t to type in string for encode, e to encode, d to decode and q to quit.")
-		fmt.Println(storage)
-		fmt.Println(key)
+		fmt.Println(key.KKey)
 		Scanner.Scan()
 		result := Scanner.Text()
 		switch result {

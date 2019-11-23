@@ -129,12 +129,15 @@ func main() {
 	gameover := 0
 	fmt.Println("1 to 1 encryption")
 	for gameover != 1 {
-		fmt.Println("Type in command: s to save, l to load, t to type in string for encode, e to encode, d to decode and q to quit.")
+		fmt.Println("Type in command: s to save, l to load, t to type in string for encode, v to view string/import, e to encode, d to decode and q to quit.")
 		Scanner.Scan()
 		result := Scanner.Text()
 		switch result {
 		case "s":
 			saveG(key, storage)
+		case "v":
+			fmt.Println(storage)
+			fmt.Println(key)
 		case "l":
 			loadG(&key, &storage)
 		case "t":
@@ -174,6 +177,7 @@ func main() {
 				storage.Decode(key)
 				fmt.Println("")
 				fmt.Println("Decoded!")
+				key.KKey = nil
 			}
 
 		case "q":

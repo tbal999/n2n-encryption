@@ -129,8 +129,6 @@ func main() {
 	fmt.Println("1 to 1 encryption")
 	for gameover != 1 {
 		fmt.Println("Type in command: s to save, l to load, t to type in string for encode, e to encode, d to decode and q to quit.")
-		fmt.Println(storage)
-		fmt.Println(key)
 		Scanner.Scan()
 		result := Scanner.Text()
 		switch result {

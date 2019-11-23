@@ -7,6 +7,8 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"os"
+	"strconv"
+	"strings"
 )
 
 //Storage - The object is accessed by index.
@@ -20,7 +22,7 @@ type Key struct {
 	KKey []int `json:"storageKey"`
 }
 
-func saveGame(w Key, o Storage) {
+func saveG(w Key, o Storage) {
 	Scanner := bufio.NewScanner(os.Stdin)
 	fmt.Println("Type in a name for the savefile (this will be saved in same folder as executable):")
 	Scanner.Scan()
@@ -42,7 +44,7 @@ func saveGame(w Key, o Storage) {
 	fmt.Println("Saved " + savefile + "!")
 }
 
-func loadGame(w *Key, o *Storage) {
+func loadG(w *Key, o *Storage) {
 	Scanner := bufio.NewScanner(os.Stdin)
 	fmt.Println("Type in name of savefile you wish to load (has to be in same folder as executable):")
 	Scanner.Scan()
@@ -125,16 +127,16 @@ func main() {
 	storage := Storage{}
 	key := Key{}
 	gameover := 0
-	fmt.Println("encryption tool")
+	fmt.Println("1 to 1 encryption")
 	for gameover != 1 {
 		fmt.Println("Type in command: s to save, l to load, t to type in string for encode, e to encode, d to decode and q to quit.")
 		Scanner.Scan()
 		result := Scanner.Text()
 		switch result {
 		case "s":
-			saveGame(key, storage)
+			saveG(key, storage)
 		case "l":
-			loadGame(&key, &storage)
+			loadG(&key, &storage)
 		case "t":
 			fmt.Println("Type in your string:")
 			Scanner.Scan()
@@ -143,11 +145,37 @@ func main() {
 		case "e":
 			storage.Encode(&key)
 		case "d":
-			fmt.Println("Decoding:")
-			fmt.Println("")
-			storage.Decode(key)
-			fmt.Println("")
-			fmt.Println("Decoded!")
+			fmt.Println("Do you have key loaded already? type 'y' to decode with loaded key, 'n' to type in key manually.")
+			Scanner.Scan()
+			res := Scanner.Text()
+			switch res {
+			case "y":
+				fmt.Println("Decoding:")
+				fmt.Println("")
+				storage.Decode(key)
+				fmt.Println("")
+				fmt.Println("Decoded!")
+			case "n":
+				key.KKey = nil
+				fmt.Println("Enter key like this '1 2 3 4' etc:")
+				Scanner.Scan()
+				keyscan := Scanner.Text()
+				stringarray := strings.Fields(keyscan)
+				for i := range stringarray {
+					no, err := strconv.Atoi(stringarray[i])
+					if err != nil {
+						fmt.Println("You typed in key incorrectly.")
+					}
+					key.KKey = append(key.KKey, no)
+				}
+				fmt.Println(key.KKey)
+				fmt.Println("Decoding:")
+				fmt.Println("")
+				storage.Decode(key)
+				fmt.Println("")
+				fmt.Println("Decoded!")
+			}
+
 		case "q":
 			gameover = 1
 		}

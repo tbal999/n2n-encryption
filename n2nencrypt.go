@@ -24,7 +24,8 @@ type Key struct {
 
 func saveG(w Key, o Storage) {
 	Scanner := bufio.NewScanner(os.Stdin)
-	fmt.Println("Type in a name for the savefile (this will be saved in same folder as executable):")
+	fmt.Println("Type in a name for the savefile:")
+	fmt.Println("This will be saved in same folder as executable as two parts, a key and the encrypted string")
 	Scanner.Scan()
 	savefile := Scanner.Text()
 	convertkey := &w
@@ -46,7 +47,7 @@ func saveG(w Key, o Storage) {
 
 func loadG(w *Key, o *Storage) {
 	Scanner := bufio.NewScanner(os.Stdin)
-	fmt.Println("Type in name of savefile you wish to load (has to be in same folder as executable):")
+	fmt.Println("Type in name of string/key you wish to load (has to be in same folder as executable):")
 	Scanner.Scan()
 	savefile := Scanner.Text()
 	worldmap := *w

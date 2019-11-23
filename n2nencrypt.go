@@ -11,10 +11,8 @@ import (
 
 //Storage - The object is accessed by index.
 type Storage struct {
-	Str   string `json:"storageString"`
-	By    []byte `json:"storageBy"`
-	Intby []byte `json:"storageInt"`
-	Code  string `json:"storageCode"`
+	Str  string `json:"storageString"`
+	Code string `json:"storageCode"`
 }
 
 //Key -  The key is accessed by index.
@@ -83,22 +81,22 @@ func check(n *[]int, y int) {
 func (s *Storage) Encode(k *Key) {
 	storage := *s
 	key := *k
-	storage.By = []byte(storage.Str)
+	By := []byte(storage.Str)
+	Intby := []byte{}
 	counter := 0
 	for counter != 1 {
-		if len(key.KKey) == len(storage.By) {
+		if len(key.KKey) == len(By) {
 			counter = 1
 		}
-		check(&key.KKey, len(storage.By)+1)
+		check(&key.KKey, len(By)+1)
 	}
-	for index := range storage.By {
+	for index := range By {
 		for index2 := range key.KKey {
-			storage.Intby = append(storage.Intby, byte(int(storage.By[index])+key.KKey[index2]))
+			Intby = append(Intby, byte(int(By[index])+key.KKey[index2]))
 		}
 	}
-	storage.Code = string(storage.Intby[:])
+	storage.Code = string(Intby[:])
 	storage.Str = "this has been encoded"
-	storage.By = nil
 	fmt.Println(storage.Code)
 	fmt.Println("")
 	fmt.Println(key.KKey)
@@ -108,12 +106,13 @@ func (s *Storage) Encode(k *Key) {
 
 func (s *Storage) Decode(x Key) {
 	storage := *s
+	By := []byte(storage.Code)
 	decoded := []byte{}
 	counter := 0
-	for i := range storage.Intby {
+	for i := range By {
 		counter = counter + 1
 		if counter == len(x.KKey) {
-			decoded = append(decoded, byte(int(storage.Intby[i])-x.KKey[counter-1]))
+			decoded = append(decoded, byte(int(By[i])-x.KKey[counter-1]))
 			counter = 0
 		}
 	}

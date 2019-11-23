@@ -7,4 +7,8 @@ it's a n to n key / string encryption in go
 4) you can save the string/key in seperate JSON files
 5) you can load them as well.
 
-That's all folks
+That's all folks for now
+
+TODO:
+
+Create API to go along with this.

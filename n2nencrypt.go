@@ -14,7 +14,6 @@ type Storage struct {
 	Str   string `json:"storageString"`
 	By    []byte `json:"storageBy"`
 	Intby []byte `json:"storageInt"`
-	Code  string `json:"storageCode"`
 }
 
 //Key -  The key is accessed by index.
@@ -96,7 +95,6 @@ func (s *Storage) Encode(k *Key) {
 			storage.Intby = append(storage.Intby, byte(int(storage.By[index])+key.KKey[index2]))
 		}
 	}
-	storage.Code = string(storage.Intby[:])
 	storage.Str = "this has been encoded"
 	storage.By = nil
 	*s = storage

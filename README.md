@@ -1,5 +1,5 @@
 # n2n-encryption
-it's a n to n key / string encryption in go
+it's a randomly generated key encryption tool in go
 
 1) type in a string
 2) encode

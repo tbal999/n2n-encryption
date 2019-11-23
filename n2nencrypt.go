@@ -9,74 +9,17 @@ import (
 	"os"
 )
 
+//Storage - The object is accessed by index.
 type Storage struct {
-	str   string
-	by    []byte
-	key   []int
-	intby []byte
-	code  string
+	Str   string `json:"storageString"`
+	By    []byte `json:"storageBy"`
+	Intby []byte `json:"storageInt"`
+	Code  string `json:"storageCode"`
 }
 
+//Key -  The key is accessed by index.
 type Key struct {
-	key []int
-}
-
-func randomNumber(min, max int) int {
-	z := rand.Intn(max)
-	if z < min {
-		z = min
-	}
-	return z
-}
-
-func check(n *[]int, y int) {
-	nest := *n
-	insertion := randomNumber(1, y)
-	for i := range nest {
-		if nest[i] == insertion {
-			return
-		}
-	}
-	nest = append(nest, insertion)
-	*n = nest
-}
-
-func (s *Storage) Encode(k *Key) {
-	storage := *s
-	key := k
-	storage.by = []byte(storage.str)
-	counter := 0
-	for counter != 1 {
-		if len(key.key) == len(storage.by) {
-			counter = 1
-		}
-		check(&key.key, len(storage.by)+1)
-	}
-	for index := range storage.by {
-		for index2 := range key.key {
-			storage.intby = append(storage.intby, byte(int(storage.by[index])+key.key[index2]))
-		}
-	}
-	storage.code = string(storage.intby[:])
-	fmt.Println(storage.code)
-	fmt.Println("")
-	fmt.Println(key.key)
-	*s = storage
-}
-
-func (s *Storage) Decode(x Key) {
-	storage := *s
-	decoded := []byte{}
-	counter := 0
-	for i := range storage.intby {
-		counter = counter + 1
-		if counter == len(x.key) {
-			decoded = append(decoded, byte(int(storage.intby[i])-x.key[counter-1]))
-			counter = 0
-		}
-	}
-	answer := string(decoded[:])
-	fmt.Println(answer)
+	KKey []int `json:"storageKey"`
 }
 
 func saveGame(w Key, o Storage) {
@@ -84,9 +27,9 @@ func saveGame(w Key, o Storage) {
 	fmt.Println("Type in a name for the savefile (this will be saved in same folder as executable):")
 	Scanner.Scan()
 	savefile := Scanner.Text()
-	convertmap := &w
+	convertkey := &w
 	convertobject := &o
-	output, err := json.Marshal(convertmap)
+	output, err := json.Marshal(convertkey)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -117,14 +60,77 @@ func loadGame(w *Key, o *Storage) {
 	fmt.Println("Loaded " + savefile + "!")
 }
 
+func randomNumber(min, max int) int {
+	z := rand.Intn(max)
+	if z < min {
+		z = min
+	}
+	return z
+}
+
+func check(n *[]int, y int) {
+	nest := *n
+	insertion := randomNumber(1, y)
+	for i := range nest {
+		if nest[i] == insertion {
+			return
+		}
+	}
+	nest = append(nest, insertion)
+	*n = nest
+}
+
+func (s *Storage) Encode(k *Key) {
+	storage := *s
+	key := *k
+	storage.By = []byte(storage.Str)
+	counter := 0
+	for counter != 1 {
+		if len(key.KKey) == len(storage.By) {
+			counter = 1
+		}
+		check(&key.KKey, len(storage.By)+1)
+	}
+	for index := range storage.By {
+		for index2 := range key.KKey {
+			storage.Intby = append(storage.Intby, byte(int(storage.By[index])+key.KKey[index2]))
+		}
+	}
+	storage.Code = string(storage.Intby[:])
+	storage.Str = "this has been encoded"
+	storage.By = nil
+	fmt.Println(storage.Code)
+	fmt.Println("")
+	fmt.Println(key.KKey)
+	*s = storage
+	*k = key
+}
+
+func (s *Storage) Decode(x Key) {
+	storage := *s
+	decoded := []byte{}
+	counter := 0
+	for i := range storage.Intby {
+		counter = counter + 1
+		if counter == len(x.KKey) {
+			decoded = append(decoded, byte(int(storage.Intby[i])-x.KKey[counter-1]))
+			counter = 0
+		}
+	}
+	answer := string(decoded[:])
+	fmt.Println(answer)
+}
+
 func main() {
 	Scanner := bufio.NewScanner(os.Stdin)
 	storage := Storage{}
 	key := Key{}
 	gameover := 0
+	fmt.Println("1 to 1 encryption")
 	for gameover != 1 {
-		fmt.Println("1 to 1 encryption")
 		fmt.Println("Type in command: s to save, l to load, t to type in string for encode, e to encode, d to decode and q to quit.")
+		fmt.Println(storage)
+		fmt.Println(key)
 		Scanner.Scan()
 		result := Scanner.Text()
 		switch result {
@@ -133,13 +139,18 @@ func main() {
 		case "l":
 			loadGame(&key, &storage)
 		case "t":
+			fmt.Println("Type in your string:")
 			Scanner.Scan()
-			storage.str = Scanner.Text()
+			storage.Str = Scanner.Text()
 			storage.Encode(&key)
 		case "e":
 			storage.Encode(&key)
 		case "d":
+			fmt.Println("Decoding:")
+			fmt.Println("")
 			storage.Decode(key)
+			fmt.Println("")
+			fmt.Println("Decoded!")
 		case "q":
 			gameover = 1
 		}

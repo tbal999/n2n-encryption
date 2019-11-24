@@ -99,10 +99,10 @@ func (s *Storage) Encode(k *Key) {
 	storage.By = nil
 	*s = storage
 	*k = key
+	fmt.Println("Encoded")
 }
 
-func (s *Storage) Decode(x Key) {
-	storage := *s
+func (storage Storage) Decode(x Key) {
 	decoded := []byte{}
 	counter := 0
 	for i := range storage.Intby {

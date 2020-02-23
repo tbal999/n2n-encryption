@@ -10,6 +10,7 @@ For example, on a 30kb file the key will be 166kb and the encrypted file will be
 4) you can save the string and key (saved in seperate JSON files, one starting with 'string' and the other starting with 'key')
 5) you can load them as well.
 6) you can also load in strings (imported in correct JSON format below) and encode them.
+7) you can also load in files to be encrypted. But i'd recommend small files! 
 
 {"storageString":"INSERTSTRINGHERE","storageBy":null,"storageInt":null}
 save the file as stringimport.JSON

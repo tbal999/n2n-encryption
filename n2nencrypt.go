@@ -123,7 +123,7 @@ func main() {
 	gameover := 0
 	fmt.Println("1 to 1 encryption")
 	for gameover != 1 {
-		fmt.Println("Type in command: s to save, l to load, t to type in string for encode, e to encode, d to decode and q to quit.")
+		fmt.Println("Type in command: s to save, l to load, l2 to load a file, t to type in string for encode, e to encode, d to decode and q to quit.")
 		Scanner.Scan()
 		result := Scanner.Text()
 		switch result {
@@ -131,6 +131,15 @@ func main() {
 			saveGame(key, storage)
 		case "l":
 			loadGame(&key, &storage)
+		case "l2":
+			fmt.Println("Type in name of file.")
+			Scanner.Scan()
+			result2 := Scanner.Text()
+			content, err := ioutil.ReadFile(result2)
+			if err != nil {
+				fmt.Println("File does not exist")
+			}
+			storage.Str = string(content)
 		case "t":
 			fmt.Println("Type in your string:")
 			Scanner.Scan()

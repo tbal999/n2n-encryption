@@ -1,5 +1,5 @@
 # n2n-encryption
-It's a randomly generated key encryption tool in go
+It's a randomly generated 1 key to 1 byte encryption tool in go
 
 It's best used on small strings - because the key will be as long as the string. 
 For example, on a 30kb file the key will be 166kb and the encrypted file will be over 1GB in size.

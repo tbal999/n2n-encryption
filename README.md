@@ -19,4 +19,6 @@ That's all folks for now
 
 TODO:
 
-Create API or frontend web app to go along with this.
+Create API or frontend web app to go along with this - DONE!
+Available at https://github.com/tbal999/n2n-encrypt-api
+
